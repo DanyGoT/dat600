@@ -35,7 +35,8 @@ func expected(arr []int) []int {
 
 func TestInsertionSort(t *testing.T) {
 	s := sortFunctions[0]
-	for _, c := range testCases {
+	for _, tc := range testCases {
+		c := append([]int(nil), tc...)
 		got, err := s.fn(c)
 		if err != nil {
 			t.Errorf("%s not implemented", s.name)
@@ -50,7 +51,8 @@ func TestInsertionSort(t *testing.T) {
 }
 func TestMergeSort(t *testing.T) {
 	s := sortFunctions[1]
-	for _, c := range testCases {
+	for _, tc := range testCases {
+		c := append([]int(nil), tc...)
 		got, err := s.fn(c)
 		if err != nil {
 			t.Errorf("%s not implemented", s.name)
@@ -65,7 +67,8 @@ func TestMergeSort(t *testing.T) {
 }
 func TestHeapSort(t *testing.T) {
 	s := sortFunctions[2]
-	for _, c := range testCases {
+	for _, tc := range testCases {
+		c := append([]int(nil), tc...)
 		got, err := s.fn(c)
 		if err != nil {
 			t.Errorf("%s not implemented", s.name)
@@ -80,7 +83,8 @@ func TestHeapSort(t *testing.T) {
 }
 func TestQuickSort(t *testing.T) {
 	s := sortFunctions[3]
-	for _, c := range testCases {
+	for _, tc := range testCases {
+		c := append([]int(nil), tc...)
 		got, err := s.fn(c)
 		if err != nil {
 			t.Errorf("%s not implemented", s.name)
