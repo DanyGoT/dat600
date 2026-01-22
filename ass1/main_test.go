@@ -33,19 +33,63 @@ func expected(arr []int) []int {
 	return a
 }
 
-func TestSortCorrect(t *testing.T) {
-	for _, s := range sortFunctions {
-		for _, c := range testCases {
-			got, err := s.fn(c)
-			if err != nil {
-				t.Errorf("%s not implemented", s.name)
-				break
-			}
+func TestInsertionSort(t *testing.T) {
+	s := sortFunctions[0]
+	for _, c := range testCases {
+		got, err := s.fn(c)
+		if err != nil {
+			t.Errorf("%s not implemented", s.name)
+			break
+		}
 
-			want := expected(c)
-			if !reflect.DeepEqual(got, want) {
-				t.Errorf("%s failed for input %v: got %v, want %v", s.name, c, got, want)
-			}
+		want := expected(c)
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("%s failed for input %v: got %v, want %v", s.name, c, got, want)
+		}
+	}
+}
+func TestMergeSort(t *testing.T) {
+	s := sortFunctions[1]
+	for _, c := range testCases {
+		got, err := s.fn(c)
+		if err != nil {
+			t.Errorf("%s not implemented", s.name)
+			break
+		}
+
+		want := expected(c)
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("%s failed for input %v: got %v, want %v", s.name, c, got, want)
+		}
+	}
+}
+func TestHeapSort(t *testing.T) {
+	s := sortFunctions[2]
+	for _, c := range testCases {
+		got, err := s.fn(c)
+		if err != nil {
+			t.Errorf("%s not implemented", s.name)
+			break
+		}
+
+		want := expected(c)
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("%s failed for input %v: got %v, want %v", s.name, c, got, want)
+		}
+	}
+}
+func TestQuickSort(t *testing.T) {
+	s := sortFunctions[3]
+	for _, c := range testCases {
+		got, err := s.fn(c)
+		if err != nil {
+			t.Errorf("%s not implemented", s.name)
+			break
+		}
+
+		want := expected(c)
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("%s failed for input %v: got %v, want %v", s.name, c, got, want)
 		}
 	}
 }

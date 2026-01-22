@@ -13,8 +13,42 @@ TEST_CASES = [
 
 
 class TestSorting(unittest.TestCase):
-    def test_sort_correct(self):
-        for sort_fn in SORT_FUNCTIONS:
-            for case in TEST_CASES:
-                with self.subTest(sort=sort_fn.__name__, input=case):
-                    self.assertEqual(sort_fn(case), sorted(case))
+    def test_insertion_sort(self):
+        sort_fn = insertion_sort
+        try:
+            sort_fn([])
+        except NotImplementedError:
+            self.fail("Not implemented")
+        for case in TEST_CASES:
+            with self.subTest(sort=sort_fn.__name__, input=case):
+                self.assertEqual(sort_fn(case), sorted(case))
+
+    def test_merge_sort(self):
+        sort_fn = merge_sort
+        try:
+            sort_fn([])
+        except NotImplementedError:
+            self.fail("Not implemented")
+        for case in TEST_CASES:
+            with self.subTest(sort=sort_fn.__name__, input=case):
+                self.assertEqual(sort_fn(case), sorted(case))
+
+    def test_heap_sort(self):
+        sort_fn = heap_sort
+        try:
+            sort_fn([])
+        except NotImplementedError:
+            self.fail("Not implemented")
+        for case in TEST_CASES:
+            with self.subTest(sort=sort_fn.__name__, input=case):
+                self.assertEqual(sort_fn(case), sorted(case))
+
+    def test_quick_sort(self):
+        sort_fn = quick_sort
+        try:
+            sort_fn([])
+        except NotImplementedError:
+            self.fail("Not implemented")
+        for case in TEST_CASES:
+            with self.subTest(sort=sort_fn.__name__, input=case):
+                self.assertEqual(sort_fn(case), sorted(case))
