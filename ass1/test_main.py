@@ -1,7 +1,8 @@
 import unittest
 from main import insertion_sort, merge_sort, heap_sort, quick_sort
 
-SORT_FUNCTIONS = [insertion_sort, merge_sort, heap_sort, quick_sort]
+__unittest = True
+
 TEST_CASES = [
     [],
     [1],
@@ -14,42 +15,27 @@ TEST_CASES = [
 
 class TestSorting(unittest.TestCase):
     def test_insertion_sort(self):
-        sort_fn = insertion_sort
-        try:
-            sort_fn([])
-        except NotImplementedError:
-            self.fail("Not implemented")
-        for case in (c.copy() for c in TEST_CASES):
-            with self.subTest(sort=sort_fn.__name__, input=case):
-                self.assertEqual(sort_fn(case), sorted(case))
+        test(self, insertion_sort)
 
     def test_merge_sort(self):
-        sort_fn = merge_sort
-        try:
-            sort_fn([])
-        except NotImplementedError:
-            self.fail("Not implemented")
-        for case in (c.copy() for c in TEST_CASES):
-            if len(case) == 4:
-                with self.subTest(sort=sort_fn.__name__, input=case):
-                    self.assertEqual(sort_fn(case), sorted(case))
+        test(self, merge_sort)
 
     def test_heap_sort(self):
-        sort_fn = heap_sort
-        try:
-            sort_fn([])
-        except NotImplementedError:
-            self.fail("Not implemented")
-        for case in (c.copy() for c in TEST_CASES):
-            with self.subTest(sort=sort_fn.__name__, input=case):
-                self.assertEqual(sort_fn(case), sorted(case))
+        test(self, heap_sort)
 
     def test_quick_sort(self):
-        sort_fn = quick_sort
-        try:
-            sort_fn([])
-        except NotImplementedError:
-            self.fail("Not implemented")
-        for case in (c.copy() for c in TEST_CASES):
-            with self.subTest(sort=sort_fn.__name__, input=case):
-                self.assertEqual(sort_fn(case), sorted(case))
+        test(self, quick_sort)
+
+
+def test(tester: TestSorting, sort_fn):
+    fail = False
+    try:
+        sort_fn([])
+    except NotImplementedError:
+        fail = True
+    if fail:
+        tester.fail("NotImplemented")
+
+    for case in (c.copy() for c in TEST_CASES):
+        with tester.subTest(sort=sort_fn.__name__, input=case):
+            tester.assertEqual(sort_fn(case), sorted(case))
