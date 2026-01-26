@@ -43,7 +43,31 @@ def merge(arr: List[int], p, q, r) -> List[int]:
 
 
 def heap_sort(arr: List[int]):
-    raise NotImplementedError
+    n = len(arr)
+    for i in range(n // 2 - 1, -1, -1):
+        arr = max_heapify(arr, n, i)
+
+    for i in range(n - 1, 0, -1):
+        arr[0], arr[i] = arr[i], arr[0]
+        arr = max_heapify(arr, i, 0)
+    return arr
+
+
+def max_heapify(arr: List[int], n: int, i: int):
+    max = i
+
+    left_node = 2 * i + 1
+    right_node = 2 * i + 2
+
+    if left_node < n and arr[left_node] > arr[max]:
+        max = left_node
+    if right_node < n and arr[right_node] > arr[max]:
+        max = right_node
+
+    if max != i:
+        arr[i], arr[max] = arr[max], arr[i]
+        arr = max_heapify(arr, n, max)
+    return arr
 
 
 def quick_sort(arr: List[int]):
