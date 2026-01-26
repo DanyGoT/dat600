@@ -18,11 +18,12 @@
             python
             pkgs.uv
             pkgs.stdenv.cc.cc.lib
+            pkgs.zlib
           ];
 
           shellHook = ''
             export PYTHON=${python}/bin/python
-            export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH"
+            export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.zlib}/lib:$LD_LIBRARY_PATH"
             if [ ! -d .venv ]; then
               echo "Creating virtual environment with Python 3.12..."
               uv venv --python ${python}/bin/python

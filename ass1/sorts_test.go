@@ -15,18 +15,6 @@ var testCases = [][]int{
 	{0, -1, 5, -3, 2},
 }
 
-type sortFunc struct {
-	name string
-	fn   func([]int) error
-}
-
-var sortFunctions = []sortFunc{
-	{"InsertionSort", func(arr []int) error { return insertion_sort(arr) }},
-	{"MergeSort", func(arr []int) error { return merge_sort(arr) }},
-	{"HeapSort", func(arr []int) error { return heap_sort(arr) }},
-	{"QuickSort", func(arr []int) error { return quick_sort(arr) }},
-}
-
 func expected(arr []int) []int {
 	a := append([]int(nil), arr...)
 	sort.Ints(a)

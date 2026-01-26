@@ -1,5 +1,17 @@
 package main
 
+type sortFunc struct {
+	name string
+	fn   func([]int) error
+}
+
+var sortFunctions = []sortFunc{
+	{"InsertionSort", func(arr []int) error { return insertion_sort(arr) }},
+	{"MergeSort", func(arr []int) error { return merge_sort(arr) }},
+	{"HeapSort", func(arr []int) error { return heap_sort(arr) }},
+	{"QuickSort", func(arr []int) error { return quick_sort(arr) }},
+}
+
 func insertion_sort(arr []int) error {
 	for j := range len(arr) {
 		key := arr[j]
