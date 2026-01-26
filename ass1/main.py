@@ -70,5 +70,27 @@ def max_heapify(arr: List[int], n: int, i: int):
     return arr
 
 
-def quick_sort(arr: List[int]):
-    raise NotImplementedError
+def quick_sort(arr: List[int], start: int = 0, pivot_point: int = -1):
+    if arr == []:
+        return arr
+
+    i = start
+    j = i
+
+    if pivot_point == -1:
+        pivot_point = len(arr) - 1
+    pivot = arr[pivot_point]
+
+    while j < pivot_point:
+        if arr[j] < pivot:
+            arr[i], arr[j] = arr[j], arr[i]
+            i += 1
+        j += 1
+
+    arr[i], arr[pivot_point] = arr[pivot_point], arr[i]
+
+    if i < j:
+        quick_sort(arr, start, i - 1)
+        quick_sort(arr, i + 1, pivot_point)
+
+    return arr
