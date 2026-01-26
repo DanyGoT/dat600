@@ -38,4 +38,5 @@ def test(tester: TestSorting, sort_fn):
 
     for case in (c.copy() for c in TEST_CASES):
         with tester.subTest(sort=sort_fn.__name__, input=case):
-            tester.assertEqual(sort_fn(case), sorted(case))
+            got, _ = sort_fn(case)
+            tester.assertEqual(got, sorted(case))
