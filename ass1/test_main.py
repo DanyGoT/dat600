@@ -1,5 +1,5 @@
 import unittest
-from main import insertion_sort, merge_sort, heap_sort, quick_sort
+from sorts import insertion_sort, merge_sort, heap_sort, quick_sort
 
 __unittest = True
 
@@ -38,5 +38,5 @@ def test(tester: TestSorting, sort_fn):
 
     for case in (c.copy() for c in TEST_CASES):
         with tester.subTest(sort=sort_fn.__name__, input=case):
-            got, _ = sort_fn(case)
+            got = sort_fn(case)
             tester.assertEqual(got, sorted(case))

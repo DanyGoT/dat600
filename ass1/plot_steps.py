@@ -2,7 +2,7 @@ import random
 from typing import List
 import matplotlib.pyplot as plt
 import numpy as np
-from main import insertion_sort, merge_sort, heap_sort, quick_sort
+from sorts_with_steps import insertion_sort, merge_sort, heap_sort, quick_sort
 
 
 def sorted_array(input_size):
