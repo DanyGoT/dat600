@@ -1,9 +1,11 @@
-#+title: Dat520 - Assignment 2
-#+author: Dany Gonzalez-Teigland
+#+title: Dat600 - Assignment 2
+#+author: Dany Gonzalez-Teigland, 267240
 
 
-[[./assignment2.pdf][Assignment PDF]]
+#+LATEX: \newpage
+* Code
 
+All implementations are in =adt/= (Set, Disjoint Set, Knapsack) and benchmarks in =benchmarks/=. Repository: https://github.com/
 
 * Task 1
 ** Assignment :noexport:
@@ -27,6 +29,20 @@ Justify your claims on the runtime complexity by analyzing the algorithm or by
 testing.
 
 ** Answer
+*** a) Implementation
+
+The Set ADT is implemented using an AVL tree, a self-balancing binary search tree. See =adt/set.py=.
+
+Each node stores an =Element(key, data)= and maintains a =height= field for balancing. After insertions and deletions, rotations restore the AVL property: $|height(left) - height(right)| \leq 1$.
+
+Since the tree height is always $O(\lg n)$, all operations run in logarithmic time. The =build(X)= operation performs $n$ insertions, giving $O(n \lg n)$. The operations =find(k)=, =insert(x)=, and =delete(k)= each require a single root-to-leaf traversal, costing $O(\lg n)$. Similarly, =find_min()= and =find_max()= follow left or right pointers to the extremes in $O(\lg n)$, and =find_prev(k)= and =find_next(k)= traverse the tree once while tracking the best candidate, also in $O(\lg n)$.
+
+*** b) Empirical Verification
+
+#+ATTR_LATEX: :width \textwidth
+[[./benchmarks/task1.pdf]]
+
+The plots confirm that measured times match $O(n \lg n)$ for =build()= and $O(\lg n)$ for =find()= and =insert()=.
 
 * Task 2
 ** Assignment :noexport:
@@ -43,6 +59,27 @@ Justify your claims on the runtime complexity by analyzing the algorithm or by
 testing.
 
 ** Answer
+*** a) Implementation
+
+The Disjoint Set ADT is implemented using union-find with two optimizations. See =adt/disjoint_set.py=.
+
+Union by rank attaches the shorter tree under the taller one, keeping trees shallow. Path compression flattens the tree during =find_set()= by pointing visited nodes directly to the root:
+
+#+begin_src python
+def find_set(self, x: int) -> int:
+    if self.parent[x] != x:
+        self.parent[x] = self.find_set(self.parent[x])  # path compression
+    return self.parent[x]
+#+end_src
+
+The =make_set(x)= operation performs two dictionary insertions, running in $\Theta(1)$. Both =find_set(x)= and =union(x,y)= run in amortized $O(\alpha(n))$ time, where $\alpha$ is the inverse Ackermann function. Since $\alpha(n) \leq 4$ for all practical values of $n$ (up to $10^{80}$), these operations are effectively constant time.
+
+*** b) Empirical Verification
+
+#+ATTR_LATEX: :width \textwidth
+[[./benchmarks/task2.pdf]]
+
+The plots show that =find_set()= and =union()= remain nearly flat as $n$ grows, while an $O(\lg n)$ reference curve increases. This confirms $\alpha(n) \ll \lg n$.
 
 * Task 3
 ** Assignment :noexport:
@@ -67,3 +104,41 @@ Choose a dynamic programming problem and do the following:
 *** d)
 Summaries in a paragraph or two your understanding of dynamic programming and
 greedy algorithms.
+
+** Answer
+*** a) Conditions for Dynamic Programming
+
+Dynamic programming applies when two conditions hold. First, the problem must have optimal substructure, meaning an optimal solution contains optimal solutions to its subproblems. Second, the problem must have overlapping subproblems, where the same subproblems are solved repeatedly during recursion.
+
+*** b) Three Strategies
+
+The simplest approach is naive recursion, which directly implements the recurrence relation but recomputes subproblems exponentially many times. Memoization improves on this by adding a cache to the recursion; subproblems are computed on demand and stored, ensuring each is solved only once. Tabulation takes a bottom-up approach instead, filling a table iteratively from the base cases, which avoids recursion overhead entirely.
+
+*** c) 0/1 Knapsack Problem
+
+See =adt/knapsack.py= for all implementations.
+
+*Recursive relation:*
+\[
+K(i, w) = \max\begin{cases}
+K(i-1, w) & \text{(skip item } i\text{)} \\
+v_i + K(i-1, w - w_i) & \text{if } w_i \leq w \text{ (take item } i\text{)}
+\end{cases}
+\]
+
+The base case is $K(i, w) = 0$ when $i < 0$ or $w \leq 0$.
+
+The naive approach directly implements this recurrence, running in $O(2^n)$. Memoization caches results for each $(i, w)$ pair, reducing complexity to $O(n \cdot W)$. Tabulation builds the same solution bottom-up using a 2D table, also in $O(n \cdot W)$. The greedy approach sorts items by value-to-weight ratio and takes them greedily, running in $O(n \lg n)$.
+
+Greedy fails for 0/1 knapsack because it cannot backtrack after making a choice. For example, with weights $[10,20,30]$, values $[60,100,120]$, and capacity $50$, greedy selects by ratio ($6, 5, 4$) and takes items 0 and 1 for a total value of $160$. The optimal solution takes items 1 and 2 for a value of $220$.
+
+#+ATTR_LATEX: :width \textwidth
+[[./benchmarks/task3.pdf]]
+
+The left plot shows naive recursion's exponential growth. The right plot shows that DP methods scale polynomially, while greedy is fastest but gives incorrect results.
+
+*** d) Summary
+
+Dynamic programming solves problems by breaking them into overlapping subproblems and storing solutions to avoid redundant computation. It requires optimal substructure and works well when the solution space is exponential but the number of unique subproblems is polynomial.
+
+Greedy algorithms make locally optimal choices hoping to reach a global optimum. They are simpler and faster but only correct when local optima lead to global optima (the greedy choice property). For problems like 0/1 knapsack, greedy fails because taking the "best" item now may prevent a better combination later.
