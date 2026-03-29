@@ -5,20 +5,13 @@ import (
 	"slices"
 )
 
-type edge struct {
-	u, v string
-	cost int
-}
-
 func Task2() {
 	graph := getGraph()
 	printDotUndirected("NonMST", graph)
 	mst := kruskal(graph)
 	printDotUndirected("MST", mst)
 
-	maxDegree := map[string]int{
-		"D": 3,
-	}
+	maxDegree := map[string]int{"D": 3}
 	mstConstrained := kruskalConstrained(graph, maxDegree)
 	improved := localSearch(mstConstrained, graph, maxDegree)
 	printDotUndirected("ConstrainedMST", improved)
@@ -42,24 +35,22 @@ func Task2() {
 	testCounterExample()
 }
 
-// Algorithms
-
 func kruskal(g []edge) []edge {
 	slices.SortFunc(g, func(a, b edge) int {
 		return a.cost - b.cost
 	})
 
 	set := newDisjointSet()
-	for _, edge := range g {
-		set.makeSet(edge.u)
-		set.makeSet(edge.v)
+	for _, e := range g {
+		set.makeSet(e.u)
+		set.makeSet(e.v)
 	}
 
 	A := []edge{}
-	for _, edge := range g {
-		if set.findSet(edge.u) != set.findSet(edge.v) {
-			A = append(A, edge)
-			set.union(edge.u, edge.v)
+	for _, e := range g {
+		if set.findSet(e.u) != set.findSet(e.v) {
+			A = append(A, e)
+			set.union(e.u, e.v)
 		}
 	}
 	return A
@@ -72,24 +63,24 @@ func kruskalConstrained(g []edge, maxDegree map[string]int) []edge {
 
 	degree := make(map[string]int)
 	set := newDisjointSet()
-	for _, edge := range g {
-		set.makeSet(edge.u)
-		set.makeSet(edge.v)
+	for _, e := range g {
+		set.makeSet(e.u)
+		set.makeSet(e.v)
 	}
 
 	A := []edge{}
-	for _, edge := range g {
-		if max, ok := maxDegree[edge.u]; ok && degree[edge.u] >= max {
+	for _, e := range g {
+		if max, ok := maxDegree[e.u]; ok && degree[e.u] >= max {
 			continue
 		}
-		if max, ok := maxDegree[edge.v]; ok && degree[edge.v] >= max {
+		if max, ok := maxDegree[e.v]; ok && degree[e.v] >= max {
 			continue
 		}
-		if set.findSet(edge.u) != set.findSet(edge.v) {
-			A = append(A, edge)
-			set.union(edge.u, edge.v)
-			degree[edge.u]++
-			degree[edge.v]++
+		if set.findSet(e.u) != set.findSet(e.v) {
+			A = append(A, e)
+			set.union(e.u, e.v)
+			degree[e.u]++
+			degree[e.v]++
 		}
 	}
 	return A
@@ -167,44 +158,24 @@ func bruteForce(g []edge, maxDeg map[string]int) ([]edge, int) {
 	return best, bestCost
 }
 
-// Utility
-
-func lowest(g []edge) edge {
-	return slices.MinFunc(g, func(a, b edge) int {
-		return a.cost - b.cost
-	})
-}
-
-func removeEdge(g []edge, e edge) []edge {
-	for i, edge := range g {
-		if e == edge {
-			return slices.Delete(g, i, i+1)
-		}
-	}
-	return g
-}
 func newEdge(u, v string, c int) edge {
 	if u > v {
 		u, v = v, u
 	}
 	return edge{u, v, c}
 }
+
 func getGraph() []edge {
 	return []edge{
 		newEdge("A", "B", 5),
 		newEdge("A", "D", 1),
-
 		newEdge("B", "D", 4),
 		newEdge("B", "H", 8),
-
 		newEdge("C", "D", 2),
 		newEdge("C", "G", 6),
-
 		newEdge("D", "E", 2),
 		newEdge("D", "F", 4),
-
 		newEdge("E", "H", 8),
-
 		newEdge("F", "G", 9),
 		newEdge("F", "H", 7),
 	}

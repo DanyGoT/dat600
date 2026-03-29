@@ -34,27 +34,6 @@ func Task1() {
 	printDot("DAG", dag.RelationMap())
 }
 
-// Types and constants
-
-type Node struct {
-	id         string
-	color      color
-	neighbours []*Node
-	d          int
-	f          int
-	scc        int
-}
-type graph [][]int
-type color string
-
-const (
-	WHITE color = "White"
-	GRAY  color = "Gray"
-	BLACK color = "Black"
-)
-
-// Algorithms
-
 func dfs(nodes map[string]*Node, keys []string) {
 	if keys == nil {
 		keys = slices.Sorted(maps.Keys(nodes))
@@ -106,15 +85,12 @@ func (g graph) ToDAG(nodes map[string]*Node) graph {
 	return dag
 }
 
-// Utility
-
 func printRelationList(rel map[string][]string) {
 	for _, k := range slices.Sorted(maps.Keys(rel)) {
 		fmt.Printf("%s → %v\n", k, rel[k])
 	}
 }
 
-// Used to generate graph using graphwiz
 func printDot(name string, rel map[string][]string) {
 	fmt.Printf("digraph %s {\n", name)
 	fmt.Println("  rankdir=LR;")
@@ -136,6 +112,7 @@ func printMap(nodes map[string]*Node) {
 		fmt.Println()
 	}
 }
+
 func printSCCs(nodes map[string]*Node) {
 	sccs := make(map[int][]string)
 	for id, node := range nodes {
@@ -147,12 +124,9 @@ func printSCCs(nodes map[string]*Node) {
 	}
 }
 
-// Matrix and list stuff
-
 func getRelationMatrix() graph {
-	// I -> C and C -> A added
-	return [][]int{
-		//  B  C  D  E  F  G  H  I  J
+	//   A  B  C  D  E  F  G  H  I  J
+	return graph{
 		{0, 1, 0, 0, 0, 0, 0, 0, 0, 0}, // A
 		{0, 0, 1, 1, 0, 0, 0, 0, 0, 0}, // B
 		{1, 0, 0, 0, 1, 1, 0, 0, 0, 0}, // C

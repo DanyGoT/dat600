@@ -7,12 +7,12 @@ import (
 )
 
 func Task3() {
-	// Task 3A:
+	// Task 3A: Find champions using reachability matrix
 	mat := getMatrixTask3()
-	printGraph(mat)
+	printMatrix(mat)
 	mat = reachabilityMatrix(mat)
 	fmt.Println()
-	printGraph(mat)
+	printMatrix(mat)
 	fmt.Println()
 	champs := champions(mat)
 	fmt.Printf("Champions: ")
@@ -21,8 +21,8 @@ func Task3() {
 	}
 	fmt.Println()
 
-	// Task 3B: Find SCCs using task1's Kosaraju implementation
-	var g graph = getMatrixTask3()
+	// Task 3B: Find SCCs using Kosaraju
+	g := getMatrixTask3()
 	nodes := makeNodeMap(g.RelationMap())
 	dfs(nodes, nil)
 
@@ -35,8 +35,8 @@ func Task3() {
 	printSCCs(nodesT)
 }
 
-func champions(g [][]int) []int {
-	champions := []int{}
+func champions(g graph) []int {
+	champs := []int{}
 	for i, row := range g {
 		isChampion := true
 		for j, val := range row {
@@ -46,13 +46,13 @@ func champions(g [][]int) []int {
 			}
 		}
 		if isChampion {
-			champions = append(champions, i)
+			champs = append(champs, i)
 		}
 	}
-	return champions
+	return champs
 }
 
-func reachabilityMatrix(g [][]int) [][]int {
+func reachabilityMatrix(g graph) graph {
 	for {
 		converged := true
 		for i, row := range g {
@@ -76,15 +76,13 @@ func reachabilityMatrix(g [][]int) [][]int {
 	return g
 }
 
-// Utility
-
 func label(i int) string {
 	return string('A' + i)
 }
 
-func getMatrixTask3() [][]int {
+func getMatrixTask3() graph {
 	//   A  B  C  D  E  F  G
-	res := [][]int{
+	return graph{
 		{0, 1, 0, 1, 0, 0, 0}, // A
 		{1, 0, 1, 0, 0, 0, 0}, // B
 		{0, 0, 0, 0, 1, 1, 0}, // C
@@ -93,10 +91,9 @@ func getMatrixTask3() [][]int {
 		{0, 0, 0, 0, 1, 0, 0}, // F
 		{0, 0, 0, 0, 0, 1, 0}, // G
 	}
-	return res
 }
 
-func printGraph(g [][]int) {
+func printMatrix(g graph) {
 	for _, row := range g {
 		fmt.Printf("%v\n", row)
 	}
