@@ -1,0 +1,6 @@
+digraph DijkstraFail {
+  rankdir=LR;
+  A -> B [label=4];
+  A -> C [label=2];
+  C -> B [label="-3"];
+}

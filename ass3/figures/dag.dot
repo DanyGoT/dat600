@@ -1,0 +1,16 @@
+digraph DAG {
+  rankdir=LR;
+  A -> B;
+  B -> C;
+  B -> D;
+  C -> E;
+  D -> E;
+  D -> F;
+  E -> G;
+  F -> G;
+  F -> H;
+  F -> J;
+  H -> I;
+  I -> C;
+  J -> I;
+}

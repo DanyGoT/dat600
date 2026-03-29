@@ -1,0 +1,10 @@
+graph ConstrainedMST {
+  rankdir=LR;
+  A -- D [label=1];
+  C -- D [label=2];
+  D -- E [label=2];
+  A -- B [label=5];
+  C -- G [label=6];
+  F -- H [label=7];
+  B -- H [label=8];
+}

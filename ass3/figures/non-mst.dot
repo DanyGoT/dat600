@@ -1,0 +1,14 @@
+graph NonMST {
+  rankdir=LR;
+  A -- B [label=5];
+  A -- D [label=1];
+  B -- D [label=4];
+  B -- H [label=8];
+  C -- D [label=2];
+  C -- G [label=6];
+  D -- E [label=2];
+  D -- F [label=4];
+  E -- H [label=8];
+  F -- G [label=9];
+  F -- H [label=7];
+}

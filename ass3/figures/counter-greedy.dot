@@ -1,0 +1,7 @@
+graph CounterGreedy {
+  rankdir=LR;
+  A -- D [label=1];
+  C -- D [label=1];
+  C -- E [label=1];
+  B -- E [label=10];
+}
